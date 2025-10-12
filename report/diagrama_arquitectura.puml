@@ -1,0 +1,21 @@
+@startuml
+actor Usuario
+rectangle "Chat Escolar\n(Frontend)" as F
+rectangle "API Gateway\n(Orchestrator)" as API
+rectangle "Agent Manager" as AG
+rectangle "LLM Service" as LLM
+rectangle "Embedding Service" as EMB
+rectangle "Vector DB\n(FAISS)" as VDB
+database "Metadata DB\n(Logs y consultas)" as MDB
+
+Usuario -> F : Realiza pregunta
+F -> API : POST /ask
+API -> AG : Procesar consulta
+AG -> EMB : Generar embeddings
+AG -> VDB : Buscar documentos similares
+VDB -> AG : Retorna top_k fragmentos
+AG -> LLM : Generar respuesta con contexto
+LLM -> AG : Respuesta final
+AG -> MDB : Registrar logs
+API -> F : Mostrar respuesta
+@enduml

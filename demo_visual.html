@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchoolBot - Demostración Visual</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border-left: 5px solid #007bff;
+        }
+        .section h2 {
+            color: #1e3c72;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        .prompt-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+        }
+        .prompt-title {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .prompt-role {
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .prompt-params {
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        .architecture-diagram {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+        .flow-step {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .arrow {
+            color: #6c757d;
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .tech-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-top: 3px solid #28a745;
+        }
+        .tech-item h4 {
+            margin: 0 0 10px 0;
+            color: #1e3c72;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .demo-button {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .file-structure {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            border: 1px solid #dee2e6;
+            line-height: 1.4;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .folder {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .file {
+            color: #6c757d;
+        }
+        .file-important {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .file-code {
+            color: #dc3545;
+        }
+        .file-doc {
+            color: #fd7e14;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 SchoolBot</h1>
+            <p>Asistente Inteligente Escolar - Demostración Visual</p>
+            <p><strong>Desarrollado por:</strong> Tania Herrera | <strong>Evaluación:</strong> EP1 ISY0101</p>
+        </div>
+
+        <div class="content">
+            <!-- Resumen del Proyecto -->
+            <div class="section">
+                <h2>📋 Resumen del Proyecto</h2>
+                <p>SchoolBot es un asistente virtual inteligente desarrollado para el <strong>Colegio San Ignacio Digital</strong>, diseñado para automatizar la respuesta a consultas frecuentes de la comunidad educativa utilizando tecnologías de <span class="highlight">RAG (Retrieval-Augmented Generation)</span> y <span class="highlight">Agentes LLM</span>.</p>
+                
+                <div class="status-badge status-completed">✅ FASE 4: Prompts Completada</div>
+                <div class="status-badge status-completed">✅ FASE 5: Pipeline RAG Completada</div>
+                <div class="status-badge status-completed">✅ FASE 6: Arquitectura Completada</div>
+                <div class="status-badge status-completed">✅ FASE 7: Informe Técnico Completada</div>
+                <div class="status-badge status-completed">✅ FASE 8: README Completada</div>
+            </div>
+
+            <!-- Prompts Principales -->
+            <div class="section">
+                <h2>🤖 Los 5 Prompts Principales</h2>
+                
+                <div class="prompt-card">
+                    <div class="prompt-title">1. System Prompt (Base)</div>
+                    <div class="prompt-role">Rol: Asistente institucional</div>
+                    <div class="prompt-params">Parámetros: temperature=0.1, max_tokens=400</div>
+                    <p>Define la identidad de SchoolBot como asistente oficial del Colegio San Ignacio Digital. Responde de forma clara, breve y respetuosa solo con información de documentos internos.</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-title">2. Síntesis RAG</div>
+                    <div class="prompt-role">Rol: Agente de respuesta</div>
+                    <div class="prompt-params">Parámetros: temperature=0.3, max_tokens=200</div>
+                    <p>Sintetiza información de documentos recuperados, redactando respuestas de máximo 150 palabras citando las fuentes entre corchetes.</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-title">3. Clarificación</div>
+                    <div class="prompt-role">Rol: Agente de interpretación</div>
+                    <div class="prompt-params">Parámetros: temperature=0.2, max_tokens=150</div>
+                    <p>Si la pregunta es ambigua o incompleta, formula 2 preguntas de aclaración para entender el contexto antes de responder.</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-title">4. Comprobación de Coherencia</div>
+                    <div class="prompt-role">Rol: Validador de respuesta</div>
+                    <div class="prompt-params">Parámetros: temperature=0.0, max_tokens=300</div>
+                    <p>Compara la respuesta generada con los fragmentos recuperados. Indica si cada afirmación está respaldada (Sí/No) y el nivel de confianza (Alta/Media/Baja).</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-title">5. Agente de Aprendizaje</div>
+                    <div class="prompt-role">Rol: Agente de mejora continua</div>
+                    <div class="prompt-params">Parámetros: temperature=0.4, max_tokens=500</div>
+                    <p>Analiza 10 consultas anteriores y su precisión. Propone mejoras en la formulación de prompts o en los datos para aumentar coherencia.</p>
+                </div>
+            </div>
+
+            <!-- Arquitectura del Sistema -->
+            <div class="section">
+                <h2>🏗️ Arquitectura del Sistema</h2>
+                <div class="architecture-diagram">
+                    <div class="flow-step">Usuario</div>
+                    <span class="arrow">→</span>
+                    <div class="flow-step">Chat Escolar</div>
+                    <span class="arrow">→</span>
+                    <div class="flow-step">API Gateway</div>
+                    <span class="arrow">→</span>
+                    <div class="flow-step">Agent Manager</div>
+                    <br><br>
+                    <div class="flow-step">LLM Service</div>
+                    <span class="arrow">↗</span>
+                    <div class="flow-step">Embedding Service</div>
+                    <span class="arrow">↗</span>
+                    <div class="flow-step">Vector DB (FAISS)</div>
+                </div>
+                <p><strong>Flujo:</strong> 14 pasos desde la consulta del usuario hasta la respuesta final del asistente.</p>
+            </div>
+
+            <!-- Stack Tecnológico -->
+            <div class="section">
+                <h2>🧰 Stack Tecnológico</h2>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <h4>Python 3.10+</h4>
+                        <p>Lenguaje principal</p>
+                    </div>
+                    <div class="tech-item">
+                        <h4>LangChain</h4>
+                        <p>Framework RAG</p>
+                    </div>
+                    <div class="tech-item">
+                        <h4>ChromaDB + FAISS</h4>
+                        <p>Base de datos vectorial</p>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Mistral 7B</h4>
+                        <p>Modelo LLM local</p>
+                    </div>
+                    <div class="tech-item">
+                        <h4>FastAPI</h4>
+                        <p>API REST</p>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Sentence Transformers</h4>
+                        <p>Embeddings semánticos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estructura del Proyecto -->
+            <div class="section">
+                <h2>📁 Estructura del Proyecto</h2>
+                <div class="file-structure">📁 <span class="folder">schoolbot_project/</span>
+│
+├── 📁 <span class="folder">report/</span>                     # 📊 Documentación del proyecto
+│   ├── 📄 <span class="file-doc">propuesta.md</span>          # Propuesta organizacional
+│   ├── 📄 <span class="file-doc">analisis.md</span>           # Análisis técnico
+│   ├── 📄 <span class="file-important">prompts.md</span>      # ⭐ Prompts principales
+│   ├── 📄 <span class="file-doc">informe_tecnico.md</span>    # Informe técnico completo
+│   ├── 📄 <span class="file-doc">diagrama_arquitectura.puml</span> # Diagrama de arquitectura
+│   └── 📊 <span class="file">tests_results.csv</span>         # Resultados de pruebas
+│
+├── 📁 <span class="folder">src/</span>                        # 💻 Código fuente
+│   ├── 📁 <span class="folder">ingest/</span>                 # 📥 Ingesta de datos
+│   │   └── 🐍 <span class="file-code">ingest_data.py</span>   # Ingesta de documentos
+│   ├── 📁 <span class="folder">embeddings/</span>             # 🧠 Procesamiento IA
+│   │   ├── 🐍 <span class="file-code">generate_embeddings.py</span> # Generación de embeddings
+│   │   └── 🐍 <span class="file-important">rag_pipeline.py</span> # ⭐ Pipeline RAG completo
+│   ├── 📁 <span class="folder">retriever/</span>              # 🔍 Búsqueda semántica
+│   │   └── 🐍 <span class="file-code">retriever.py</span>     # Búsqueda semántica
+│   ├── 📁 <span class="folder">api/</span>                    # 🌐 API REST
+│   │   └── 🐍 <span class="file-code">app.py</span>           # API REST
+│   ├── 📁 <span class="folder">prompts/</span>                # 🤖 Prompts del sistema
+│   │   ├── 🐍 <span class="file-important">main_prompts.py</span> # ⭐ 5 prompts principales
+│   │   ├── 🐍 <span class="file-code">system_prompts.py</span> # Prompts del sistema
+│   │   ├── 🐍 <span class="file-code">prompt_examples.py</span> # Ejemplos de uso
+│   │   └── 🐍 <span class="file-code">prompt_config.py</span>  # Configuración
+│   └── 📁 <span class="folder">tests/</span>                  # 🧪 Tests del sistema
+│       └── 🐍 <span class="file-code">test_pipeline.py</span>  # Tests del sistema
+│
+├── 📁 <span class="folder">data/</span>                       # 💾 Datos del sistema
+│   ├── 📁 <span class="folder">docs/</span>                   # 📚 Documentos escolares
+│   ├── 📁 <span class="folder">vector_db/</span>              # 🗄️ Base de datos vectorial
+│   ├── 📁 <span class="folder">processed/</span>              # ⚙️ Documentos procesados
+│   └── 📁 <span class="folder">temp/</span>                   # 🗂️ Archivos temporales
+│
+├── 📄 <span class="file-important">requirements.txt</span>    # ⭐ Dependencias Python
+├── 📄 <span class="file-important">README.md</span>           # ⭐ Documentación principal
+├── ⚙️ <span class="file">config.env</span>                    # Variables de entorno
+├── 🌐 <span class="file-important">chatbot_simulator.html</span> # ⭐ Simulador de chat
+├── 🌐 <span class="file">demo_visual.html</span>              # Demostración visual
+├── 🌐 <span class="file">demo_api.html</span>                 # Demo de API
+└── 📋 <span class="file">PRUEBA_CHATBOT.md</span>             # Guía de pruebas
+                </div>
+            </div>
+
+            <!-- Ejemplo de Uso -->
+            <div class="section">
+                <h2>🧪 Ejemplo de Uso</h2>
+                <div style="background: #e9ecef; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <strong>Pregunta:</strong> ¿Cuándo son las vacaciones de invierno?<br><br>
+                    <strong>Respuesta:</strong> Según el Calendario Escolar 2024, las vacaciones de invierno son del 8 al 19 de julio [Calendario2024.pdf].
+                </div>
+                <p><strong>Resultados de Pruebas:</strong></p>
+                <ul>
+                    <li>Precisión@1 = 85%</li>
+                    <li>MRR = 0.82</li>
+                    <li>Coherencia promedio = 90%</li>
+                </ul>
+            </div>
+
+            <!-- Instrucciones de Instalación -->
+            <div class="section">
+                <h2>⚙️ Instrucciones de Instalación</h2>
+                <p><strong>Para ejecutar el proyecto necesitas:</strong></p>
+                <ol>
+                    <li><strong>Instalar Python 3.10+</strong> desde <a href="https://python.org" target="_blank">python.org</a></li>
+                    <li><strong>Instalar dependencias:</strong> <code>pip install -r requirements.txt</code></li>
+                    <li><strong>Configurar Ollama:</strong> <code>ollama pull mistral:7b</code></li>
+                    <li><strong>Ejecutar pipeline:</strong> <code>python src/ingest/ingest_data.py</code></li>
+                    <li><strong>Iniciar API:</strong> <code>python src/api/app.py</code></li>
+                </ol>
+            </div>
+
+            <!-- Botones de Demostración -->
+            <div class="section" style="text-align: center;">
+                <h2>🚀 Demostraciones Disponibles</h2>
+                <button class="demo-button" onclick="window.open('report/prompts.md', '_blank')">Ver Prompts Completos</button>
+                <button class="demo-button" onclick="window.open('report/diagrama_arquitectura.puml', '_blank')">Ver Diagrama UML</button>
+                <button class="demo-button" onclick="window.open('README.md', '_blank')">Ver README</button>
+                <button class="demo-button" onclick="window.open('RESUMEN_IMPLEMENTACION.md', '_blank')">Ver Resumen Completo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

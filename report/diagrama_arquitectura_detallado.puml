@@ -1,0 +1,146 @@
+@startuml SchoolBot - Arquitectura Detallada
+
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+
+title SchoolBot - Asistente Inteligente Escolar\nArquitectura Detallada del Sistema
+
+' Definir colores
+skinparam component {
+    BackgroundColor #E8F4FD
+    BorderColor #1E88E5
+    FontColor #000000
+}
+
+skinparam database {
+    BackgroundColor #F3E5F5
+    BorderColor #8E24AA
+    FontColor #000000
+}
+
+skinparam cloud {
+    BackgroundColor #E8F5E8
+    BorderColor #4CAF50
+    FontColor #000000
+}
+
+' Usuario y Frontend
+actor "Usuario\n(Estudiante/Apoderado/Profesor)" as Usuario
+rectangle "Chat Escolar\n(Frontend Web)" as Frontend
+
+' API Gateway
+rectangle "API Gateway\n(FastAPI Orchestrator)" as APIGateway
+
+' Servicios de IA
+rectangle "Agent Manager\n(Coordinador de Agentes)" as AgentManager
+rectangle "LLM Service\n(Mistral 7B + Ollama)" as LLMService
+rectangle "Embedding Service\n(Sentence Transformers)" as EmbeddingService
+rectangle "RAG Pipeline\n(Retrieval Augmented Generation)" as RAGPipeline
+
+' Bases de datos
+database "Vector DB\n(ChromaDB + FAISS)" as VectorDB
+database "Metadata DB\n(PostgreSQL)" as MetadataDB
+database "Document Store\n(File System)" as DocumentStore
+
+' Servicios externos
+cloud "Documentos Escolares\n(PDF, DOCX, XLSX)" as ExternalDocs
+
+' Flujo principal
+Usuario -> Frontend : 1. Realiza pregunta
+Frontend -> APIGateway : 2. POST /ask
+APIGateway -> AgentManager : 3. Procesar consulta
+AgentManager -> EmbeddingService : 4. Generar embeddings
+EmbeddingService -> VectorDB : 5. Buscar documentos similares
+VectorDB -> AgentManager : 6. Retorna top_k fragmentos
+AgentManager -> RAGPipeline : 7. Preparar contexto RAG
+RAGPipeline -> LLMService : 8. Generar respuesta con contexto
+LLMService -> RAGPipeline : 9. Respuesta generada
+RAGPipeline -> AgentManager : 10. Respuesta final
+AgentManager -> MetadataDB : 11. Registrar logs y métricas
+AgentManager -> APIGateway : 12. Respuesta procesada
+APIGateway -> Frontend : 13. Mostrar respuesta
+Frontend -> Usuario : 14. Respuesta final
+
+' Conexiones de datos
+ExternalDocs -> RAGPipeline : Ingesta de documentos
+RAGPipeline -> DocumentStore : Almacenar documentos procesados
+RAGPipeline -> VectorDB : Almacenar embeddings
+VectorDB -> MetadataDB : Vincular metadatos
+
+' Notas explicativas
+note right of AgentManager
+  **Agent Manager:**
+  - Coordina los 5 agentes principales
+  - Gestiona el flujo de trabajo
+  - Aplica validaciones de coherencia
+  - Registra métricas de performance
+end note
+
+note right of RAGPipeline
+  **RAG Pipeline:**
+  - Carga documentos (PDF, DOCX, XLSX)
+  - Divide en chunks (600 chars, 80 overlap)
+  - Genera embeddings semánticos
+  - Búsqueda por similitud coseno
+  - Síntesis de contexto relevante
+end note
+
+note right of LLMService
+  **LLM Service:**
+  - Modelo: Mistral 7B
+  - Despliegue local con Ollama
+  - Prompts optimizados por contexto
+  - Parámetros ajustables por tipo de consulta
+end note
+
+note right of VectorDB
+  **Vector Database:**
+  - ChromaDB para almacenamiento
+  - FAISS para búsqueda eficiente
+  - Índice HNSW para similitud
+  - Metadatos enriquecidos
+end note
+
+note bottom of ExternalDocs
+  **Fuentes de Documentos:**
+  - Reglamento Escolar (PDF)
+  - Calendario Académico (XLSX)
+  - Circulares a Apoderados (DOCX)
+  - Menú de Almuerzos (PDF)
+  - Manual de Procedimientos (PDF)
+end note
+
+' Estilos para diferentes tipos de componentes
+skinparam component {
+    [Chat Escolar\n(Frontend Web)] {
+        BackgroundColor #E3F2FD
+        BorderColor #1976D2
+    }
+    [API Gateway\n(FastAPI Orchestrator)] {
+        BackgroundColor #FFF3E0
+        BorderColor #F57C00
+    }
+    [Agent Manager\n(Coordinador de Agentes)] {
+        BackgroundColor #E8F5E8
+        BorderColor #388E3C
+    }
+    [LLM Service\n(Mistral 7B + Ollama)] {
+        BackgroundColor #E8F5E8
+        BorderColor #388E3C
+    }
+    [RAG Pipeline\n(Retrieval Augmented Generation)] {
+        BackgroundColor #E8F5E8
+        BorderColor #388E3C
+    }
+    [Vector DB\n(ChromaDB + FAISS)] {
+        BackgroundColor #F3E5F5
+        BorderColor #7B1FA2
+    }
+    [Metadata DB\n(PostgreSQL)] {
+        BackgroundColor #F3E5F5
+        BorderColor #7B1FA2
+    }
+}
+
+@enduml

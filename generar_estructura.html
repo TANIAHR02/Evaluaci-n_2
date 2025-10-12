@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Estructura de Proyecto - SchoolBot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 30px;
+        }
+        .tree-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+            border: 1px solid #dee2e6;
+        }
+        .tree-folder {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .tree-file {
+            color: #6c757d;
+        }
+        .tree-file-important {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .tree-file-code {
+            color: #dc3545;
+        }
+        .tree-file-doc {
+            color: #fd7e14;
+        }
+        .controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 8px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        .control-group select, .control-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .export-options {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        .export-options h4 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .export-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 5px;
+        }
+        .export-btn:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌳 Generador de Estructura de Proyecto</h1>
+            <p>SchoolBot - Asistente Inteligente Escolar</p>
+        </div>
+
+        <div class="content">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="style">Estilo de Visualización:</label>
+                    <select id="style" onchange="generateTree()">
+                        <option value="emoji">Con Emojis (Recomendado)</option>
+                        <option value="simple">Simple</option>
+                        <option value="detailed">Detallado</option>
+                        <option value="minimal">Minimalista</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="showDescriptions">Mostrar Descripciones:</label>
+                    <input type="checkbox" id="showDescriptions" checked onchange="generateTree()">
+                </div>
+                <div class="control-group">
+                    <label for="showIcons">Mostrar Iconos:</label>
+                    <input type="checkbox" id="showIcons" checked onchange="generateTree()">
+                </div>
+                <button class="btn" onclick="generateTree()">🔄 Regenerar Estructura</button>
+                <button class="btn" onclick="copyToClipboard()">📋 Copiar al Portapapeles</button>
+            </div>
+
+            <div class="tree-container" id="treeContainer">
+                <!-- La estructura se generará aquí -->
+            </div>
+
+            <div class="export-options">
+                <h4>📤 Opciones de Exportación:</h4>
+                <button class="export-btn" onclick="exportAsText()">📄 Exportar como Texto</button>
+                <button class="export-btn" onclick="exportAsMarkdown()">📝 Exportar como Markdown</button>
+                <button class="export-btn" onclick="exportAsHTML()">🌐 Exportar como HTML</button>
+                <button class="export-btn" onclick="printTree()">🖨️ Imprimir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projectStructure = {
+            "schoolbot_project": {
+                type: "folder",
+                description: "Proyecto principal SchoolBot",
+                children: {
+                    "report": {
+                        type: "folder",
+                        description: "Documentación del proyecto",
+                        icon: "📊",
+                        children: {
+                            "propuesta.md": { type: "file", description: "Propuesta organizacional", icon: "📄" },
+                            "analisis.md": { type: "file", description: "Análisis técnico", icon: "📄" },
+                            "prompts.md": { type: "file", description: "Prompts principales", icon: "⭐", important: true },
+                            "informe_tecnico.md": { type: "file", description: "Informe técnico completo", icon: "📄" },
+                            "diagrama_arquitectura.puml": { type: "file", description: "Diagrama de arquitectura", icon: "📄" },
+                            "tests_results.csv": { type: "file", description: "Resultados de pruebas", icon: "📊" }
+                        }
+                    },
+                    "src": {
+                        type: "folder",
+                        description: "Código fuente",
+                        icon: "💻",
+                        children: {
+                            "ingest": {
+                                type: "folder",
+                                description: "Ingesta de datos",
+                                icon: "📥",
+                                children: {
+                                    "ingest_data.py": { type: "file", description: "Ingesta de documentos", icon: "🐍", code: true }
+                                }
+                            },
+                            "embeddings": {
+                                type: "folder",
+                                description: "Procesamiento IA",
+                                icon: "🧠",
+                                children: {
+                                    "generate_embeddings.py": { type: "file", description: "Generación de embeddings", icon: "🐍", code: true },
+                                    "rag_pipeline.py": { type: "file", description: "Pipeline RAG completo", icon: "⭐", code: true, important: true }
+                                }
+                            },
+                            "retriever": {
+                                type: "folder",
+                                description: "Búsqueda semántica",
+                                icon: "🔍",
+                                children: {
+                                    "retriever.py": { type: "file", description: "Búsqueda semántica", icon: "🐍", code: true }
+                                }
+                            },
+                            "api": {
+                                type: "folder",
+                                description: "API REST",
+                                icon: "🌐",
+                                children: {
+                                    "app.py": { type: "file", description: "API REST", icon: "🐍", code: true }
+                                }
+                            },
+                            "prompts": {
+                                type: "folder",
+                                description: "Prompts del sistema",
+                                icon: "🤖",
+                                children: {
+                                    "main_prompts.py": { type: "file", description: "5 prompts principales", icon: "⭐", code: true, important: true },
+                                    "system_prompts.py": { type: "file", description: "Prompts del sistema", icon: "🐍", code: true },
+                                    "prompt_examples.py": { type: "file", description: "Ejemplos de uso", icon: "🐍", code: true },
+                                    "prompt_config.py": { type: "file", description: "Configuración", icon: "🐍", code: true }
+                                }
+                            },
+                            "tests": {
+                                type: "folder",
+                                description: "Tests del sistema",
+                                icon: "🧪",
+                                children: {
+                                    "test_pipeline.py": { type: "file", description: "Tests del sistema", icon: "🐍", code: true }
+                                }
+                            }
+                        }
+                    },
+                    "data": {
+                        type: "folder",
+                        description: "Datos del sistema",
+                        icon: "💾",
+                        children: {
+                            "docs": { type: "folder", description: "Documentos escolares", icon: "📚" },
+                            "vector_db": { type: "folder", description: "Base de datos vectorial", icon: "🗄️" },
+                            "processed": { type: "folder", description: "Documentos procesados", icon: "⚙️" },
+                            "temp": { type: "folder", description: "Archivos temporales", icon: "🗂️" }
+                        }
+                    },
+                    "requirements.txt": { type: "file", description: "Dependencias Python", icon: "⭐", important: true },
+                    "README.md": { type: "file", description: "Documentación principal", icon: "⭐", important: true },
+                    "config.env": { type: "file", description: "Variables de entorno", icon: "⚙️" },
+                    "chatbot_simulator.html": { type: "file", description: "Simulador de chat", icon: "⭐", important: true },
+                    "demo_visual.html": { type: "file", description: "Demostración visual", icon: "🌐" },
+                    "demo_api.html": { type: "file", description: "Demo de API", icon: "🌐" },
+                    "PRUEBA_CHATBOT.md": { type: "file", description: "Guía de pruebas", icon: "📋" }
+                }
+            }
+        };
+
+        function generateTree() {
+            const style = document.getElementById('style').value;
+            const showDescriptions = document.getElementById('showDescriptions').checked;
+            const showIcons = document.getElementById('showIcons').checked;
+            
+            const tree = buildTree(projectStructure, '', style, showDescriptions, showIcons);
+            document.getElementById('treeContainer').innerHTML = tree;
+        }
+
+        function buildTree(structure, prefix, style, showDescriptions, showIcons) {
+            let result = '';
+            
+            for (const [name, item] of Object.entries(structure)) {
+                const isLast = Object.keys(structure).indexOf(name) === Object.keys(structure).length - 1;
+                const connector = isLast ? '└── ' : '├── ';
+                const nextPrefix = prefix + (isLast ? '    ' : '│   ');
+                
+                let displayName = name;
+                let className = 'tree-file';
+                
+                if (item.type === 'folder') {
+                    className = 'tree-folder';
+                    if (showIcons && item.icon) {
+                        displayName = `${item.icon} ${name}`;
+                    }
+                } else {
+                    if (item.important) {
+                        className = 'tree-file-important';
+                    } else if (item.code) {
+                        className = 'tree-file-code';
+                    } else if (item.icon === '📄') {
+                        className = 'tree-file-doc';
+                    }
+                    
+                    if (showIcons && item.icon) {
+                        displayName = `${item.icon} ${name}`;
+                    }
+                }
+                
+                result += `${prefix}${connector}<span class="${className}">${displayName}</span>`;
+                
+                if (showDescriptions && item.description) {
+                    result += ` <span style="color: #6c757d; font-style: italic;"># ${item.description}</span>`;
+                }
+                
+                result += '\n';
+                
+                if (item.children) {
+                    result += buildTree(item.children, nextPrefix, style, showDescriptions, showIcons);
+                }
+            }
+            
+            return result;
+        }
+
+        function copyToClipboard() {
+            const treeText = document.getElementById('treeContainer').textContent;
+            navigator.clipboard.writeText(treeText).then(() => {
+                alert('✅ Estructura copiada al portapapeles');
+            });
+        }
+
+        function exportAsText() {
+            const treeText = document.getElementById('treeContainer').textContent;
+            const blob = new Blob([treeText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'schoolbot_estructura.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportAsMarkdown() {
+            const treeText = document.getElementById('treeContainer').textContent;
+            const markdown = '```\n' + treeText + '\n```';
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'schoolbot_estructura.md';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportAsHTML() {
+            const treeHTML = document.getElementById('treeContainer').innerHTML;
+            const html = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Estructura del Proyecto SchoolBot</title>
+    <style>
+        body { font-family: 'Courier New', monospace; padding: 20px; }
+        .tree-folder { color: #007bff; font-weight: bold; }
+        .tree-file { color: #6c757d; }
+        .tree-file-important { color: #28a745; font-weight: bold; }
+        .tree-file-code { color: #dc3545; }
+        .tree-file-doc { color: #fd7e14; }
+    </style>
+</head>
+<body>
+    <pre>${treeHTML}</pre>
+</body>
+</html>`;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'schoolbot_estructura.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function printTree() {
+            window.print();
+        }
+
+        // Generar estructura inicial
+        generateTree();
+    </script>
+</body>
+</html>

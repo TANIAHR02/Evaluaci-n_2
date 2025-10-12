@@ -1,0 +1,53 @@
+test_id,test_name,test_type,status,execution_time,accuracy,confidence,user_satisfaction,notes
+T001,Consulta Horarios Clases,Functional,Pass,1.2,95,0.92,4.5,Respuesta precisa sobre horarios de clases
+T002,Consulta Reglamento Estudiantil,Functional,Pass,2.1,90,0.88,4.2,Información correcta sobre normas de conducta
+T003,Consulta Fechas Evaluaciones,Functional,Pass,1.8,92,0.90,4.4,Fechas exactas del calendario académico
+T004,Consulta Menú Almuerzos,Functional,Pass,1.5,88,0.85,4.1,Información actualizada del menú semanal
+T005,Consulta Procedimientos Administrativos,Functional,Pass,2.3,85,0.82,4.0,Procedimientos paso a paso correctos
+T006,Consulta Información Personal,Functional,Fail,1.9,0,0.0,1.0,Correctamente rechazó consulta sobre datos personales
+T007,Consulta Ambigua,Functional,Pass,2.5,78,0.75,3.8,Solicitó aclaración adicional apropiadamente
+T008,Consulta Fuera de Horario,Functional,Pass,1.7,90,0.87,4.3,Información sobre horarios de atención
+T009,Consulta Múltiples Idiomas,Functional,Pass,2.0,85,0.83,4.0,Respondió correctamente en español chileno
+T010,Consulta Técnica Compleja,Functional,Pass,3.2,82,0.80,3.9,Explicación detallada de procedimiento complejo
+T011,Stress Test 10 Usuarios,Performance,Pass,2.8,88,0.85,4.1,Tiempo de respuesta dentro de límites
+T012,Stress Test 50 Usuarios,Performance,Pass,3.1,85,0.82,3.9,Degradación mínima con alta carga
+T013,Stress Test 100 Usuarios,Performance,Pass,3.5,82,0.80,3.8,Límite de capacidad alcanzado
+T014,Test Disponibilidad 24h,Reliability,Pass,0.0,99.2,0.99,4.5,Sistema estable durante 24 horas
+T015,Test Recuperación Fallo,Reliability,Pass,45.0,95,0.92,4.2,Recuperación automática en 45 segundos
+T016,Test Seguridad Autenticación,Security,Pass,1.5,100,1.0,4.5,Autenticación robusta implementada
+T017,Test Seguridad Autorización,Security,Pass,1.8,100,1.0,4.5,Control de acceso por roles funcionando
+T018,Test Privacidad Datos,Security,Pass,2.0,100,1.0,4.5,Cumplimiento de protección de datos
+T019,Test Inyección Prompts,Security,Pass,1.6,100,1.0,4.5,Validación de entrada efectiva
+T020,Test Escalabilidad Horizontal,Scalability,Pass,2.2,90,0.88,4.2,Load balancing funcionando correctamente
+T021,Test Escalabilidad Vertical,Scalability,Pass,1.9,92,0.90,4.3,Auto-scaling respondiendo apropiadamente
+T022,Test Backup Restauración,Backup,Pass,120.0,100,1.0,4.5,Backup y restauración exitosos
+T023,Test Migración Datos,Migration,Pass,180.0,98,0.95,4.4,Migración de datos sin pérdida
+T024,Test Actualización Sistema,Maintenance,Pass,300.0,95,0.92,4.3,Actualización sin interrupciones
+T025,Test Monitoreo Alertas,Monitoring,Pass,1.0,100,1.0,4.5,Sistema de alertas funcionando
+T026,Test Logs Auditoría,Audit,Pass,0.5,100,1.0,4.5,Logging completo y estructurado
+T027,Test API Rate Limiting,API,Pass,1.2,100,1.0,4.5,Límites de API respetados
+T028,Test API Versioning,API,Pass,1.4,100,1.0,4.5,Versionado de API funcionando
+T029,Test API Documentation,API,Pass,0.8,100,1.0,4.5,Documentación de API completa
+T030,Test Integración Externa,Integration,Pass,2.5,88,0.85,4.1,Integración con sistemas externos exitosa
+T031,Test Usuario Estudiante,User Experience,Pass,1.8,90,0.87,4.4,Experiencia optimizada para estudiantes
+T032,Test Usuario Apoderado,User Experience,Pass,2.0,88,0.85,4.2,Interfaz apropiada para apoderados
+T033,Test Usuario Profesor,User Experience,Pass,1.9,92,0.89,4.3,Funcionalidades específicas para profesores
+T034,Test Usuario Administrador,User Experience,Pass,1.7,95,0.93,4.5,Panel de administración completo
+T035,Test Responsive Mobile,User Experience,Pass,1.6,90,0.87,4.2,Diseño responsive funcionando
+T036,Test Accesibilidad,Accessibility,Pass,2.1,85,0.82,4.0,Cumplimiento de estándares de accesibilidad
+T037,Test Internacionalización,Internationalization,Pass,1.9,88,0.85,4.1,Soporte para español chileno
+T038,Test Localización,Localization,Pass,1.8,90,0.88,4.3,Formato de fechas y números localizado
+T039,Test Performance Embeddings,Performance,Pass,1.5,95,0.92,4.4,Generación de embeddings optimizada
+T040,Test Performance Retrieval,Performance,Pass,1.3,92,0.90,4.3,Búsqueda semántica eficiente
+T041,Test Performance LLM,Performance,Pass,2.2,88,0.86,4.1,Generación de respuestas rápida
+T042,Test Memory Usage,Performance,Pass,0.0,100,1.0,4.5,Uso de memoria dentro de límites
+T043,Test CPU Usage,Performance,Pass,0.0,100,1.0,4.5,Uso de CPU optimizado
+T044,Test Disk Usage,Performance,Pass,0.0,100,1.0,4.5,Almacenamiento eficiente
+T045,Test Network Latency,Performance,Pass,1.1,95,0.92,4.4,Latencia de red mínima
+T046,Test Concurrent Users,Concurrency,Pass,2.4,88,0.85,4.1,100 usuarios concurrentes soportados
+T047,Test Data Consistency,Data Integrity,Pass,1.7,100,1.0,4.5,Consistencia de datos mantenida
+T048,Test Transaction Integrity,Data Integrity,Pass,1.9,100,1.0,4.5,Integridad de transacciones garantizada
+T049,Test Error Handling,Error Handling,Pass,1.4,95,0.92,4.3,Manejo de errores robusto
+T050,Test Graceful Degradation,Graceful Degradation,Pass,2.0,90,0.88,4.2,Degradación elegante bajo carga
+
+

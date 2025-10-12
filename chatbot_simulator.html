@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchoolBot - Simulador de Chat</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .chat-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        .chat-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .message.bot {
+            justify-content: flex-start;
+        }
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        .message.user .message-content {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .message.user .message-avatar {
+            background: #007bff;
+            color: white;
+        }
+        .message.bot .message-avatar {
+            background: #28a745;
+            color: white;
+        }
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+        .chat-input input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        .chat-input button {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .chat-input button:hover {
+            transform: translateY(-2px);
+        }
+        .chat-input button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .typing-indicator {
+            display: none;
+            padding: 10px 16px;
+            background: #e9ecef;
+            border-radius: 18px;
+            font-style: italic;
+            color: #6c757d;
+            margin-left: 45px;
+        }
+        .quick-questions {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .quick-questions h4 {
+            margin: 0 0 10px 0;
+            color: #1e3c72;
+            font-size: 14px;
+        }
+        .quick-question {
+            display: inline-block;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .quick-question:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .source-info {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🎓 SchoolBot</h1>
+            <p>Asistente Inteligente del Colegio San Ignacio Digital</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    ¡Hola! Soy SchoolBot, tu asistente virtual del Colegio San Ignacio Digital. 
+                    Estoy aquí para ayudarte con consultas sobre horarios, reglamentos, calendario académico y más. 
+                    ¿En qué puedo ayudarte hoy?
+                </div>
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            SchoolBot está escribiendo...
+        </div>
+        
+        <div class="quick-questions">
+            <h4>💡 Preguntas frecuentes:</h4>
+            <div class="quick-question" onclick="sendQuickQuestion('¿Cuáles son los horarios de clases?')">Horarios de clases</div>
+            <div class="quick-question" onclick="sendQuickQuestion('¿Cuándo son las vacaciones de invierno?')">Vacaciones de invierno</div>
+            <div class="quick-question" onclick="sendQuickQuestion('¿Cómo justificar una inasistencia?')">Justificar inasistencia</div>
+            <div class="quick-question" onclick="sendQuickQuestion('¿Cuál es el menú de almuerzos?')">Menú de almuerzos</div>
+            <div class="quick-question" onclick="sendQuickQuestion('¿Dónde está el reglamento escolar?')">Reglamento escolar</div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Escribe tu pregunta aquí..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()" id="sendButton">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Base de conocimiento simulada
+        const knowledgeBase = {
+            "horarios": {
+                answer: "Los horarios de clases del Colegio San Ignacio Digital son de lunes a viernes de 8:00 a 16:00 horas. El horario de entrada es a las 8:00 AM y la salida a las 4:00 PM.",
+                source: "Reglamento Escolar 2024"
+            },
+            "vacaciones": {
+                answer: "Las vacaciones de invierno 2024 son del 8 al 19 de julio. Durante este período no habrá clases regulares.",
+                source: "Calendario Académico 2024"
+            },
+            "inasistencia": {
+                answer: "Para justificar una inasistencia, debes presentar un certificado médico o justificativo firmado por tu apoderado en la secretaría del colegio dentro de las 48 horas siguientes.",
+                source: "Manual de Procedimientos"
+            },
+            "menú": {
+                answer: "El menú de almuerzos incluye opciones saludables y balanceadas. Esta semana tenemos: lunes-pollo, martes-pescado, miércoles-carne, jueves-pasta, viernes-pizza saludable.",
+                source: "Menú Semanal - Casino"
+            },
+            "reglamento": {
+                answer: "El reglamento escolar está disponible en la página web del colegio y en la secretaría. Contiene todas las normas de conducta, asistencia y procedimientos académicos.",
+                source: "Reglamento Escolar 2024"
+            },
+            "uniforme": {
+                answer: "El uniforme escolar es obligatorio y debe incluir: camisa blanca, pantalón azul marino, zapatos negros y chaqueta del colegio en invierno.",
+                source: "Reglamento Escolar 2024"
+            },
+            "notas": {
+                answer: "Las notas se publican en el portal estudiantil cada mes. Para consultas específicas sobre calificaciones, debes contactar a tu profesor jefe.",
+                source: "Manual de Procedimientos"
+            },
+            "biblioteca": {
+                answer: "La biblioteca está abierta de lunes a viernes de 8:00 a 17:00 horas. Tiene una amplia colección de libros y recursos digitales para estudiantes.",
+                source: "Manual de Procedimientos"
+            }
+        };
+
+        function addMessage(content, isUser = false, source = null) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '👤' : '🤖';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = content;
+            
+            if (source && !isUser) {
+                const sourceInfo = document.createElement('div');
+                sourceInfo.className = 'source-info';
+                sourceInfo.textContent = `Fuente: ${source}`;
+                messageContent.appendChild(sourceInfo);
+            }
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            document.getElementById('typingIndicator').style.display = 'block';
+        }
+
+        function hideTyping() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        function findAnswer(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            for (const [key, data] of Object.entries(knowledgeBase)) {
+                if (lowerQuestion.includes(key) || 
+                    lowerQuestion.includes('horario') && key === 'horarios' ||
+                    lowerQuestion.includes('vacacion') && key === 'vacaciones' ||
+                    lowerQuestion.includes('justificar') && key === 'inasistencia' ||
+                    lowerQuestion.includes('menu') && key === 'menú' ||
+                    lowerQuestion.includes('reglamento') && key === 'reglamento' ||
+                    lowerQuestion.includes('uniforme') && key === 'uniforme' ||
+                    lowerQuestion.includes('nota') && key === 'notas' ||
+                    lowerQuestion.includes('biblioteca') && key === 'biblioteca') {
+                    return data;
+                }
+            }
+            
+            return {
+                answer: "Lo siento, no tengo información específica sobre esa consulta en los documentos disponibles del colegio. Te recomiendo contactar directamente con la secretaría para obtener información más detallada.",
+                source: "Sistema SchoolBot"
+            };
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Agregar mensaje del usuario
+            addMessage(message, true);
+            input.value = '';
+            
+            // Mostrar indicador de escritura
+            showTyping();
+            
+            // Simular tiempo de procesamiento
+            setTimeout(() => {
+                hideTyping();
+                
+                // Buscar respuesta
+                const response = findAnswer(message);
+                addMessage(response.answer, false, response.source);
+            }, 1500);
+        }
+
+        function sendQuickQuestion(question) {
+            document.getElementById('messageInput').value = question;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Agregar mensaje de bienvenida adicional después de 2 segundos
+        setTimeout(() => {
+            addMessage("Puedes hacer preguntas sobre horarios, vacaciones, reglamentos, menú de almuerzos, uniformes, notas, biblioteca y más. ¡Estoy aquí para ayudarte!", false);
+        }, 3000);
+    </script>
+</body>
+</html>
