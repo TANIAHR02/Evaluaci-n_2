@@ -2,10 +2,10 @@
 SchoolBot - Asistente Inteligente Escolar
 Script de Prueba de Prompts
 
-Autor: [Nombre del Estudiante]
-Fecha: [Fecha Actual]
+Autor: Tania Herrera Rodriguez
+Fecha: octubre 2025
 Evaluación: EP1 - Ingeniería de Soluciones con Inteligencia Artificial
-Institución: Universidad [Nombre]
+Institución: DUOC UC
 
 Descripción:
 Este script demuestra el funcionamiento de los prompts del sistema SchoolBot

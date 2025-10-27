@@ -1,0 +1,94 @@
+@startuml SchoolBot_Agent_Architecture
+!theme plain
+title SchoolBot Agent - Arquitectura del Sistema EP2
+
+package "Usuario" {
+    [Usuario] as User
+    [Interfaz de Usuario] as UI
+}
+
+package "Orquestador Principal" {
+    [AgentOrchestrator] as AO
+    [Session Manager] as SM
+    [Métricas Manager] as MM
+}
+
+package "Agente Principal" {
+    [Core Agent] as CA
+    [State Manager] as ST
+    [Context Manager] as CT
+}
+
+package "Sistema de Memoria" {
+    [Memory Manager] as MM_M
+    [Memoria Corto Plazo] as STM
+    [Memoria Largo Plazo] as LTM
+    [Memoria Episódica] as EM
+    [Memoria Semántica] as SM_M
+}
+
+package "Motor de Planificación" {
+    [Planning Engine] as PE
+    [Plan Storage] as PS
+    [Decision System] as DS
+    [Strategy System] as SS
+}
+
+package "Herramientas" {
+    [Query Tool] as QT
+    [Writing Tool] as WT
+    [Reasoning Tool] as RT
+}
+
+package "Base de Conocimiento" {
+    [Vector Retriever] as VR
+    [Vector Database] as VD
+    [Documentos Escolares] as DOCS
+}
+
+package "Configuración" {
+    [Config Manager] as CM
+    [User Config] as UC
+    [Environment Config] as EC
+}
+
+' Conexiones principales
+User --> UI
+UI --> AO
+AO --> CA
+AO --> SM
+AO --> MM
+
+CA --> MM_M
+CA --> PE
+CA --> QT
+CA --> WT
+CA --> RT
+
+MM_M --> STM
+MM_M --> LTM
+MM_M --> EM
+MM_M --> SM_M
+
+PE --> PS
+PE --> DS
+PE --> SS
+
+QT --> VR
+VR --> VD
+VD --> DOCS
+
+CM --> UC
+CM --> EC
+CM --> CA
+
+' Flujo de datos
+note right of AO : Coordina todos los\ncomponentes del sistema
+note right of CA : Núcleo del agente\ncon estados y contexto
+note right of MM_M : Gestión de memoria\nmultinivel
+note right of PE : Planificación jerárquica\ny toma de decisiones
+note right of QT : Búsqueda semántica\nen documentos
+note right of WT : Generación de\ndocumentos escolares
+note right of RT : Análisis y razonamiento\npara decisiones
+
+@enduml
