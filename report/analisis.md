@@ -1,9 +1,3 @@
-# Análisis Técnico - SchoolBot – Asistente Inteligente Escolar
-
-**Autor:** [Nombre del Estudiante]  
-**Fecha:** [Fecha Actual]  
-**Evaluación:** EP1 - Ingeniería de Soluciones con Inteligencia Artificial  
-**Institución:** Universidad [Nombre]  
 
 ---
 
